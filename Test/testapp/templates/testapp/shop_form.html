@@ -156,16 +156,16 @@ function submit_form() {
                 shop_name.innerText = currentIdx + ". " + shop.name;
 
                 const shop_id = document.createElement("p");
-                shop_id.innerText = shop.shop_id;
+                shop_id.innerText = "Shop id:" + shop.shop_id;
 
                 const shop_owner = document.createElement("p");
-                shop_owner.innerText = shop.owner;
+                shop_owner.innerText = "Shop owner:" +  shop.owner;
 
                 const shop_lat = document.createElement("p");
-                shop_lat.innerText = shop.latitude;
+                shop_lat.innerText = "latitude:" + shop.latitude;
 
                 const shop_long = document.createElement("p");
-                shop_long.innerText = shop.longitude;
+                shop_long.innerText = "longitude:" + shop.longitude;
 
                 cardDiv.appendChild(shop_name);
                 cardDiv.appendChild(shop_id);
