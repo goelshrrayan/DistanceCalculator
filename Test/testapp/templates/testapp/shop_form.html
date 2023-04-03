@@ -133,12 +133,13 @@ function submit_form() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var response = JSON.parse(this.responseText);
+            const cardList = document.getElementById("card-list");
+            cardList.innerHTML = ""
             if (response["status"] == 200) {
                 var shop_list = response["data"]
                 console.log(shop_list)
                 
-                const cardList = document.getElementById("card-list");
-                cardList.innerHTML = ""
+                
                 // const jsonOutput = document.getElementById("json-output");
 
                 // jsonOutput.value = "Total Shops located within the given distance: " + shop_list.length + "\n" + JSON.stringify(shop_list, null, 2);

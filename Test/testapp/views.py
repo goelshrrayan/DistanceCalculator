@@ -238,7 +238,7 @@ class SubmitShopFormAPI(APIView):
             
             
             try:
-                distance = data.get('distance')
+                distance = decimal.Decimal(data.get('distance'))
             except:   
                 response['status'] = 403
                 response["message"] = "Please enter valid distance in km. It shoud be a number." 
