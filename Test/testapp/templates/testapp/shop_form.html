@@ -61,6 +61,33 @@
     text-align: center;
     padding: 25px;
   }
+
+  .card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px;
+  width: 300px;
+  display: inline-block;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 4px rgba(0,0,0,0.2);
+}
+
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 16px;
+  line-height: 1.5;
+}
   </style>
 </head>
 <body>
@@ -80,9 +107,11 @@
     <input type="button" value="Submit" id="submit" onclick="submit_form()">
   </form>
 
-  <div id="json-container">
+  <!-- <div id="json-container">
     <textarea id="json-output" readonly></textarea>
-  </div>
+  </div> -->
+
+  <div id="card-list"></div>
 </body>
 <script type="text/javascript">
 function submit_form() {
@@ -107,11 +136,41 @@ function submit_form() {
             if (response["status"] == 200) {
                 var shop_list = response["data"]
                 console.log(shop_list)
+                
+                const cardList = document.getElementById("card-list");
+                cardList.innerHTML = ""
+                // const jsonOutput = document.getElementById("json-output");
 
-                const jsonOutput = document.getElementById("json-output");
+                // jsonOutput.value = "Total Shops located within the given distance: " + shop_list.length + "\n" + JSON.stringify(shop_list, null, 2);
 
-                jsonOutput.value = "Total Shops located within the given distance: " + shop_list.length + "\n" + JSON.stringify(shop_list, null, 2);
+                shop_list.forEach((shop, idx) => {
+                const cardDiv = document.createElement("div");
+                cardDiv.className = "card";
 
+                const shop_name = document.createElement("h5");
+                var currentIdx = idx + 1;
+                shop_name.innerText = currentIdx + ". " + shop.name;
+
+                const shop_id = document.createElement("p");
+                shop_id.innerText = shop.shop_id;
+
+                const shop_owner = document.createElement("p");
+                shop_owner.innerText = shop.owner;
+
+                const shop_lat = document.createElement("p");
+                shop_lat.innerText = shop.latitude;
+
+                const shop_long = document.createElement("p");
+                shop_long.innerText = shop.longitude;
+
+                cardDiv.appendChild(shop_name);
+                cardDiv.appendChild(shop_id);
+                cardDiv.appendChild(shop_owner);
+                cardDiv.appendChild(shop_lat);
+                cardDiv.appendChild(shop_long);
+
+                cardList.appendChild(cardDiv);
+              });
             } else {
                 var error_message = response.message;
                 alert(error_message);
