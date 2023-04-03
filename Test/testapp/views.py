@@ -57,12 +57,12 @@ class CreateUpdateShopAPI(APIView):
                 return Response(data=response)
             
             
-            if not lat >= -90 and not lat <= 90:
+            if lat < -90 or lat > 90:
                 response['status'] = 403
                 response["message"] = "Please enter valid latitude(Range -90 to 90)." 
                 return Response(data=response)
             
-            if not long >= -180 and not long <= 180:
+            if long < -180 or  long > 180:
                 response['status'] = 403
                 response["message"] = "Please enter valid longitude(Range -180 to 180)." 
                 return Response(data=response)
@@ -188,7 +188,6 @@ def HomeShop(request):  # noqa: N802
     try:
         
         shop_objects = Shop.objects.all()
-        print(shop_objects)
         return render(request, "testapp/home_shops.html", {
             "shops": shop_objects
         })
