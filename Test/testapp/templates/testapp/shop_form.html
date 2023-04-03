@@ -138,8 +138,11 @@ function submit_form() {
             if (response["status"] == 200) {
                 var shop_list = response["data"]
                 console.log(shop_list)
-                
-                
+                 
+                if (shop_list.length == 0) {
+                  alert("Sorry no shops are in within this distance. Try increasing the distance.")
+                  return
+                }
                 // const jsonOutput = document.getElementById("json-output");
 
                 // jsonOutput.value = "Total Shops located within the given distance: " + shop_list.length + "\n" + JSON.stringify(shop_list, null, 2);
