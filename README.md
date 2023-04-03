@@ -1,6 +1,9 @@
 # DistanceCalculator
 DistanceCalculator 91Social
 
+Deploying the project on cloud:
+(https://dev.to/osahenru/using-railway-app-to-deploy-your-django-project-3ah1)
+
 Running the project locally:
 
 1. Create a virtual environment using
