@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     # General ChatBot
+    url(r'^$', views.HomeShop),
     url(r'^create-update-shop', views.CreateUpdateShop),
     url(r'^get-shop-data', views.GetShop),
     url(r'^delete-shop', views.DeleteShop),

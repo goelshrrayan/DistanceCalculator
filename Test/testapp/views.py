@@ -37,8 +37,14 @@ class CreateUpdateShopAPI(APIView):
             shop_id = data.get('shop_id')
             name = data.get("name")
             owner = data.get("owner")
-            lat = data.get("latitude")
-            long = data.get("longitude")
+            try:
+                lat = decimal.Decimal(data.get("latitude"))
+                long = decimal.Decimal(data.get("longitude"))
+
+            except:   
+                response['status'] = 403
+                response["message"] = "Please check the value entered for latitude and longitude. Please enter valid decimal range." 
+                return Response(data=response) 
 
             if not name.strip():
                 response['status'] = 403
@@ -172,10 +178,27 @@ def ShopForm(request):  # noqa: N802
         
     except Exception as e:  # noqa: F841
         exc_type, exc_obj, exc_tb = sys.exc_info()
-        print("Error MIS_dashboard! %s %s",
+        print("Error ShopForm! %s %s",
                      str(e), str(exc_tb.tb_lineno))
         
         return HttpResponseNotFound()
+    
+
+def HomeShop(request):  # noqa: N802
+    try:
+        
+        shop_objects = Shop.objects.all()
+        print(shop_objects)
+        return render(request, "testapp/home_shops.html", {
+            "shops": shop_objects
+        })
+        
+    except Exception as e:  # noqa: F841
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        print("Error HomeShop! %s %s",
+                     str(e), str(exc_tb.tb_lineno))
+        
+        return HttpResponseNotFound()    
     
 
 class SubmitShopFormAPI(APIView):

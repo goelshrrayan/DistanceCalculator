@@ -98,7 +98,7 @@ function submit_form() {
     // var params = JSON.stringify(encrypted_data);
 
     var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/shop/submit-shop-form/", true);
+    xhttp.open("POST", "/submit-shop-form/", true);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     // xhttp.setRequestHeader('X-CSRFToken', get_csrfmiddlewaretoken());
     xhttp.onreadystatechange = function () {
@@ -110,7 +110,7 @@ function submit_form() {
 
                 const jsonOutput = document.getElementById("json-output");
 
-                jsonOutput.value = "Total values: " + shop_list.length + "\n" + JSON.stringify(shop_list, null, 2);
+                jsonOutput.value = "Total Shops located within the given distance: " + shop_list.length + "\n" + JSON.stringify(shop_list, null, 2);
 
             } else {
                 var error_message = response.message;
