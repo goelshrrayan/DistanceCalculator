@@ -216,10 +216,39 @@ class SubmitShopFormAPI(APIView):
             if not isinstance(data, dict):
                 data = json.loads(data)
             # data = request.data
-            latitude = decimal.Decimal(data.get('latitude'))
-            longitude = decimal.Decimal(data.get('longitude'))
+
+            try:
+                latitude = decimal.Decimal(data.get("latitude"))
+                longitude = decimal.Decimal(data.get("longitude"))
+
+            except:   
+                response['status'] = 403
+                response["message"] = "Please check the value entered for latitude and longitude. Please enter valid decimal range." 
+                return Response(data=response) 
             
-            distance = data.get('distance')
+            if latitude < -90 or latitude > 90:
+                response['status'] = 403
+                response["message"] = "Please enter valid latitude(Range -90 to 90)." 
+                return Response(data=response)
+            
+            if longitude < -180 or  longitude > 180:
+                response['status'] = 403
+                response["message"] = "Please enter valid longitude(Range -180 to 180)." 
+                return Response(data=response)
+            
+            
+            try:
+                distance = data.get('distance')
+            except:   
+                response['status'] = 403
+                response["message"] = "Please enter valid distance in km. It shoud be a number." 
+                return Response(data=response) 
+            
+            if distance < 0:
+                response['status'] = 403
+                response["message"] = "Please enter valid distance(equal to or greater than 0)." 
+                return Response(data=response)
+
 
             shop_objects = Shop.objects.all()
             shop_list = []
@@ -227,7 +256,7 @@ class SubmitShopFormAPI(APIView):
                 obj_lat = obj.latitude
                 obj_long = obj.longitude
                 distance_in_km = distance_lat_long(latitude, longitude, obj_lat, obj_long)
-                if int(distance_in_km) <= int(distance):
+                if distance_in_km != -1 and distance_in_km <= distance:
                     shop_list.append({"shop_id": obj.id, 
                                       "name": obj.name, 
                                       "owner": obj.owner,

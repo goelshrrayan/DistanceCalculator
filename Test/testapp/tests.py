@@ -3,8 +3,6 @@ from django.test import TestCase
 
 # Create your tests here.
 
-from django.test import Client
-from django.conf import settings
 from rest_framework.test import APIClient
 from testapp.models import *
 
@@ -49,13 +47,13 @@ class Views(TestCase):
         self.assertEqual(len(response['data']), 1)
         self.assertEqual(response['data'][0]["name"], "test1")
 
-        # test case 2: similar to test case 1 but distance is increased to 1 km.
-        # This will fetch both the shops created above because both are less than 1 km
+        # test case 2: similar to test case 1 but distance is increased to 2 km.
+        # This will fetch both the shops created above because both are less than 2 km
         # w.r.t below lat long
         json_string = json.dumps({
             "latitude": 32.74506332016356,
             "longitude": 74.8343579053311,
-            "distance": 1,
+            "distance": 2,
         })
 
 
@@ -85,5 +83,39 @@ class Views(TestCase):
         response = request.data
         self.assertEqual(response["status"], 200)
         self.assertEqual(len(response['data']), 0)
+
+        # test case 4: Distance given is negative
+        # It will return status 403 for wrong input
+        json_string = json.dumps({
+            "latitude": 33.74506332016356,
+            "longitude": 75.8343579053311,
+            "distance": -50,
+        })
+
+
+        request = client.post('/submit-shop-form',
+                              json_string,
+                              content_type='application/json')
+
+        response = request.data
+        self.assertEqual(response["status"], 403)
+
+        # test case 5: latitude is not in the range -90 to 90
+        # It will return status 403 for wrong input and message 
+        # "Please enter valid latitude(Range -90 to 90)."
+        json_string = json.dumps({
+            "latitude": 103.74506332016356,
+            "longitude": 75.8343579053311,
+            "distance": 34,
+        })
+
+
+        request = client.post('/submit-shop-form',
+                              json_string,
+                              content_type='application/json')
+
+        response = request.data
+        self.assertEqual(response["status"], 403)
+        self.assertEqual(response["message"], "Please enter valid latitude(Range -90 to 90).")
 
     
